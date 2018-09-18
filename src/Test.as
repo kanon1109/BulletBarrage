@@ -33,8 +33,6 @@ public class Test extends Sprite
 		label.color = "#FFFFFF";
 		label.x = stage.width / 2;
 		this.addChild(label);
-		
-		
 	}
 	
 	private function loadImgComplete(event:Event):void
@@ -48,35 +46,36 @@ public class Test extends Sprite
 	
 	private function loopHandler():void 
 	{
+		this.barrage.move(Laya.stage.mouseX, Laya.stage.mouseY);
 		this.barrage.update();
 	}
 	
 	private function clickHandler(event:Event):void 
 	{
 		this.b = !this.b;
-		/*this.barrage.createLine(this.bulletTexture, event.stageX, event.stageY, 20, 30, 20, 0, 0, 100, 0, 5);
-		this.barrage.threeCrossBarrage(this.bulletTexture, new Vector2(event.stageX, event.stageY), 
-								new Vector2(event.stageX, event.stageY), 
-								new Vector2(event.stageX, event.stageY), 
+
+		//this.barrage.createCircle(this.bullet2Texture, Laya.stage.mouseX, Laya.stage.mouseY, 30, 10, 0, 0, 5);
+		//this.barrage.roundWaveBarrage(this.bulletTexture, 20, 30, 5, 0, 0, 80);
+		
+		//this.barrage.createSector(this.bullet2Texture, event.stageX, event.stageY, 5, 60, 120, 4, 0, 10, 2);
+
+		//this.barrage.createLine(this.bullet2Texture, 120, 90, 6, 0, 0, 100, 0, 5);
+		
+		//this.barrage.createScatter(this.bullet2Texture, 10, 60, 120, 10, 0, 0, 80, 0, 5);
+		
+		/*this.barrage.threeCrossBarrage(this.bulletTexture, 
 								-30, 90, 210, 45, 8, 50, 0, 0, 80);
 								
-		this.barrage.threeCrossBarrage(this.bulletTexture, new Vector2(event.stageX, event.stageY), 
-								new Vector2(event.stageX, event.stageY), 
-								new Vector2(event.stageX, event.stageY), 
-								-90, 30, 120, 45, 8, 50, 0, 0, 80);
-		if (this.b)
-			this.barrage.roundWaveBarrage(this.bulletTexture, event.stageX, event.stageY, 20, 30, 5, 0, 0, 80);
+		this.barrage.threeCrossBarrage(this.bulletTexture, 
+								-90, 30, 120, 45, 8, 50, 0, 0, 80);*/
+								
+		/*if (this.b)
+			this.barrage.circleWaveBarrage(this.bulletTexture, 20, 30, 5, 0, 0, 80);
 		else
-			this.barrage.rotateWaveBarrage(this.bulletTexture, event.stageX, event.stageY, 2, 50, 5, 0, 0, 80, 80);*/
+			this.barrage.rotateScatterBarrage(this.bulletTexture, 2, 50, 5, 0, 0, 80);*/
 			
-		this.barrage.sectorWaveBarrage(this.bullet2Texture, event.stageX - 110, event.stageY, 30, 3, 75, 45, 4, 0, 10, 220, 10);
-		this.barrage.sectorWaveBarrage(this.bullet2Texture, event.stageX + 110, event.stageY, 30, 3, 115, 45, 4, 0, 10, 220, 10);
+		//this.barrage.sectorWaveBarrage(this.bullet2Texture, 30, 3, 75, 45, 4, 0, 10, 220, 10);
+		//this.barrage.twoSectorWaveBarrage(this.bullet2Texture, 30, 3, 75, 115, 45, 4, 0, 10, 220, 10, 110, 0);
 	}
-	
-	
-	
-	
-	
-	
 }
 }
