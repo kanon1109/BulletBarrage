@@ -27,10 +27,10 @@ public class Bullet
 	public var rotation:Number = 0;
 	//标记
 	public var tag:int;
-	//生命周期
-	public var life:int;
 	//显示对象
 	public var image:Sprite;
+	//是否可以被销毁
+	public var canDestroy:Boolean;
 	public function Bullet() 
 	{
 		
@@ -46,6 +46,7 @@ public class Bullet
 		this.vx += this.ax;
 		this.vy += this.ay;
 		this.rotation += this.av;
+		
 		if (this.image)
 		{
 			this.image.x = this.x;

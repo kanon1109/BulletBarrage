@@ -318,6 +318,38 @@ public class Barrage
 	}
 	
 	/**
+	 * 固定位置的环形弹幕
+	 * @param	texture		纹理
+	 * @param	x			初始位置x
+	 * @param	y			初始位置y
+	 * @param	wave		弹幕波数
+	 * @param	wave		弹幕波数
+	 * @param	count		一波数量
+	 * @param	speed		子弹速度
+	 * @param	accel		子弹加速度
+	 * @param	angular		子弹角速度
+	 * @param	delay		波数之间延迟时间  (0 为所有波数一起发出)	
+	 */
+	public function circleWaveBarrageFixed(texture:Texture, 
+										  x:Number, y:Number, 
+										  wave:uint, count:uint,
+										  speed:Number, accel:Number = 0, 
+										  angular:Number = 0, delay:Number = 0):void
+	{
+		var callback:Function = function ()
+		{
+			this.createCircle(texture, x, y, count, speed, accel, angular);
+		}
+		for (var i:int = 0; i < wave; i++) 
+		{
+			if (delay > 0)
+				Laya.timer.once(i * delay, this, callback, null, false);
+			else
+				callback.call(this)
+		}
+	}
+	
+	/**
 	 * 三叉弹幕
 	 * @param	texture		纹理
 	 * @param	angle1		起始角度1
@@ -422,10 +454,63 @@ public class Barrage
 	}
 	
 	/**
+	 * 烟火弹幕
+	 * @param	texture1	纹理1
+	 * @param	texture2	纹理2
+	 * @param	delay		延迟
+	 * @param	wave		波数
+	 * @param	count		数量
+	 * @param	angle		角度
+	 * @param	speed		速度
+	 * @param	accel		加速度
+	 * @param	angular		角速度
+	 */
+	public function fireworksBarrage(texture1:Texture, 
+									texture2:Texture, 
+									delay:uint,
+									wave:uint, 
+									count:uint,
+									angle:Number, 
+									speed:Number, 
+									accel:Number=0, 
+									angular:Number=0):void
+	{
+		var b:Bullet = new Bullet();
+		b.x = this.x;
+		b.y = this.y;
+		var rad:Number = MathUtil.dgs2rds(angle);
+		b.vx = Math.cos(rad) * speed;
+		b.vy = Math.sin(rad) * speed;
+		b.ax = Math.cos(rad) * accel;
+		b.ay = Math.sin(rad) * accel;
+		b.av = angular;
+		b.rotation = angle;
+		this.bulletList.push(b);
+		if (texture1 && this.scene)
+		{
+			var sp:Image = new Image();
+			sp.source = texture1;
+			sp.x = b.x;
+			sp.y = b.y;
+			sp.rotation = b.rotation;
+			sp.anchorX = .5;
+			sp.anchorY = .5;
+			b.image = sp;
+			this.scene.addChild(sp);
+		}
+		var callback:Function = function () {
+			this.circleWaveBarrageFixed(texture2, b.x, b.y, wave, count, speed, accel, angular, 100);
+			b.canDestroy = true;
+		}
+		Laya.timer.once(delay, this, callback, null, false);
+	}
+	
+	/**
 	 * 更新
 	 */
 	public function update():void
 	{
+		if (!this.bulletList) return;
 		var length:int = this.bulletList.length;
 		var b:Bullet;
 		for (var i:int = 0; i < length; i++) 
@@ -438,7 +523,8 @@ public class Barrage
 			b = this.bulletList[i];
 			if (this.viewport)
 			{
-				if (b.x < this.viewport.x || 
+				if (b.canDestroy ||
+					b.x < this.viewport.x || 
 					b.x > this.viewport.x + this.viewport.width ||
 					b.y < this.viewport.y ||
 					b.y > this.viewport.y + this.viewport.height)
@@ -480,6 +566,8 @@ public class Barrage
 	public function destroy():void
 	{
 		this.clearAll();
+		Laya.timer.clearAll(this);
+		this.scene = null;
 		this.bulletList = null;
 	}
 }

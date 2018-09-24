@@ -53,7 +53,13 @@ public class Test extends Sprite
 	private function clickHandler(event:Event):void 
 	{
 		this.b = !this.b;
-
+		
+		this.barrage.fireworksBarrage(this.bulletTexture, this.bullet2Texture, 300, 3, 20, 90, 6);
+		
+		/*if (!this.b)
+		{
+			this.barrage.clearAll();
+		}*/
 		//this.barrage.createCircle(this.bullet2Texture, Laya.stage.mouseX, Laya.stage.mouseY, 30, 10, 0, 0, 5);
 		//this.barrage.roundWaveBarrage(this.bulletTexture, 20, 30, 5, 0, 0, 80);
 		
