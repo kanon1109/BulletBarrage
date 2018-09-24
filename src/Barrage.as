@@ -147,7 +147,7 @@ public class Barrage
 	{
 		var angle:Number = startRot + Random.randnum(-angleRand, angleRand);
 		var angleInterval:Number = (endRot - startRot) / (count - 1);
-		var callback:Function = function()
+		var callback:Function = function():void
 		{
 			var b:Bullet = new Bullet();
 			b.x = this.x;
@@ -203,7 +203,7 @@ public class Barrage
 								interval:uint = 0, delay:uint = 0, 
 								angleRand:Number = 0, offsetX:Number = 0, offsetY:Number = 0):void
 	{
-		var callback:Function = function()
+		var callback:Function = function():void
 		{
 			var b:Bullet = new Bullet();
 			b.x = this.x + offsetX;
@@ -304,7 +304,7 @@ public class Barrage
 									  speed:Number, accel:Number = 0, 
 									  angular:Number = 0, delay:Number = 0):void
 	{
-		var callback:Function = function ()
+		var callback:Function = function ():void
 		{
 			this.createCircle(texture, this.x, this.y, count, speed, accel, angular);
 		}
@@ -336,7 +336,7 @@ public class Barrage
 										  speed:Number, accel:Number = 0, 
 										  angular:Number = 0, delay:Number = 0):void
 	{
-		var callback:Function = function ()
+		var callback:Function = function ():void
 		{
 			this.createCircle(texture, x, y, count, speed, accel, angular);
 		}
@@ -401,7 +401,7 @@ public class Barrage
 										offsetX:Number = 0, 
 										offsetY:Number = 0) :void
 	{
-		var callback:Function = function ()
+		var callback:Function = function ():void
 		{
 			this.createSector(texture, this.x + offsetX, this.y + offsetY, 
 								count, angle + angleRange / 2, angle - angleRange / 2, 
@@ -461,9 +461,8 @@ public class Barrage
 	 * @param	wave		波数
 	 * @param	count		数量
 	 * @param	angle		角度
-	 * @param	speed		速度
-	 * @param	accel		加速度
-	 * @param	angular		角速度
+	 * @param	speed1		发射速度
+	 * @param	speed2		散射速度
 	 */
 	public function fireworksBarrage(texture1:Texture, 
 									texture2:Texture, 
@@ -471,19 +470,15 @@ public class Barrage
 									wave:uint, 
 									count:uint,
 									angle:Number, 
-									speed:Number, 
-									accel:Number=0, 
-									angular:Number=0):void
+									speed1:Number,
+									speed2:Number):void
 	{
 		var b:Bullet = new Bullet();
 		b.x = this.x;
 		b.y = this.y;
 		var rad:Number = MathUtil.dgs2rds(angle);
-		b.vx = Math.cos(rad) * speed;
-		b.vy = Math.sin(rad) * speed;
-		b.ax = Math.cos(rad) * accel;
-		b.ay = Math.sin(rad) * accel;
-		b.av = angular;
+		b.vx = Math.cos(rad) * speed1;
+		b.vy = Math.sin(rad) * speed1;
 		b.rotation = angle;
 		this.bulletList.push(b);
 		if (texture1 && this.scene)
@@ -498,8 +493,9 @@ public class Barrage
 			b.image = sp;
 			this.scene.addChild(sp);
 		}
-		var callback:Function = function () {
-			this.circleWaveBarrageFixed(texture2, b.x, b.y, wave, count, speed, accel, angular, 100);
+		var callback:Function = function ():void
+		{
+			this.circleWaveBarrageFixed(texture2, b.x, b.y, wave, count, speed2, 0, 0, 100);
 			b.canDestroy = true;
 		}
 		Laya.timer.once(delay, this, callback, null, false);
@@ -518,7 +514,7 @@ public class Barrage
 			b = this.bulletList[i];
 			b.update();
 		}
-		for (var i:int = 0; i < this.bulletList.length; i++) 
+		for (i = 0; i < this.bulletList.length; i++) 
 		{
 			b = this.bulletList[i];
 			if (this.viewport)

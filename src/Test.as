@@ -29,7 +29,7 @@ public class Test extends Sprite
 		Laya.loader.load(arr, Handler.create(this, loadImgComplete), null, Loader.IMAGE);
 		
 		var label:Label = new Label("0.0.6");
-		label.font = 20;
+		label.fontSize = 20;
 		label.color = "#FFFFFF";
 		label.x = stage.width / 2;
 		this.addChild(label);
@@ -54,7 +54,7 @@ public class Test extends Sprite
 	{
 		this.b = !this.b;
 		
-		this.barrage.fireworksBarrage(this.bulletTexture, this.bullet2Texture, 300, 3, 20, 90, 6);
+		this.barrage.fireworksBarrage(this.bulletTexture, this.bullet2Texture, 300, 3, 20, 90, 6, 4);
 		
 		/*if (!this.b)
 		{

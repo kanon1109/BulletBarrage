@@ -46,7 +46,6 @@ public class Bullet
 		this.vx += this.ax;
 		this.vy += this.ay;
 		this.rotation += this.av;
-		
 		if (this.image)
 		{
 			this.image.x = this.x;
